@@ -1,0 +1,50 @@
+# Go 관련
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+tmp/
+vendor/
+go.work
+
+# IDE 관련
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 프로젝트 특정
+air_errors.log
+.env
+.env.local
+.env.*.local
+
+# 빌드 출력
+dist/
+build/
+*.log
+tmp/main
+tmp/main.exe
+
+# 운영체제 관련
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Makefile 관련
+*.d
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+*.exe~
+*.dll
+*.test
+*.out 

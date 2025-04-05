@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <!-- Pretendard 폰트 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- HTMX CDN -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+    <!-- Custom JavaScript -->
+    <script src="/static/js/layout.js"></script>
+</head>
+<body>
+    <!-- Navigation Drawer -->
+    <div class="navigation-drawer">
+        <div class="p-4 flex-1">
+            <div class="flex items-center mb-8">
+                <h2 class="text-xl font-bold">Dogu</h2>
+            </div>
+            <nav>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="#" class="nav-item active">
+                            <span class="material-icons mr-3">home</span>
+                            <span>홈</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item">
+                            <span class="material-icons mr-3">settings</span>
+                            <span>설정</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="navigation-drawer-overlay" onclick="toggleDrawer()"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="top-app-bar">
+                <button type="button" class="mobile-menu-button material-button" onclick="toggleDrawer()">
+                    <span class="material-icons">menu</span>
+                    <span>메뉴</span>
+                </button>
+            </div>
+            
+            <div class="content-section">
+                <div class="surface-card">
+                    <h1 class="text-2xl font-bold mb-4">환영합니다</h1>
+                    <p class="text-on-surface mb-6">HTMX와 Tailwind CSS가 적용된 기본 템플릿입니다.</p>
+                    <button 
+                        class="material-button"
+                        hx-get="/api/hello"
+                        hx-swap="innerHTML transition:true"
+                        hx-target="#response">
+                        <span class="material-icons">send</span>
+                        <span>HTMX 테스트</span>
+                    </button>
+                    <div id="response" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span class="material-icons" id="theme-icon">light_mode</span>
+    </button>
+
+    <script>
+        // 테마 아이콘 업데이트
+        function updateThemeIcon() {
+            const themeIcon = document.getElementById('theme-icon');
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            themeIcon.textContent = currentTheme === 'dark' ? 'dark_mode' : 'light_mode';
+        }
+
+        // 초기 테마 아이콘 설정
+        updateThemeIcon();
+
+        // 테마 변경 시 아이콘 업데이트
+        const originalToggleTheme = window.toggleTheme;
+        window.toggleTheme = function() {
+            originalToggleTheme();
+            updateThemeIcon();
+        };
+    </script>
+</body>
+</html> 

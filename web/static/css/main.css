@@ -1,0 +1,290 @@
+/* 폰트 로딩 최적화 */
+@font-face {
+    font-family: 'Pretendard Variable';
+    font-display: swap;
+    src: local('Pretendard Variable'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css') format('woff2-variations');
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.fonts-loaded body {
+    font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+/* 테마 관련 스타일 */
+:root {
+    --md-sys-color-primary: #c2e7ff;
+    --md-sys-color-on-primary: #003258;
+    --md-sys-color-primary-container: #00497d;
+    --md-sys-color-on-primary-container: #d1e4ff;
+    --md-sys-color-surface: #ffffff;
+    --md-sys-color-on-surface: #1a1c1e;
+    --md-sys-color-surface-variant: #e0e2ec;
+    --md-sys-color-on-surface-variant: #42474e;
+    --md-sys-color-background: #fafbfc;
+    --md-sys-color-on-background: #1a1c1e;
+    --md-sys-color-navigation: #ffffff;
+    --md-sys-color-on-navigation: #1a1c1e;
+    --md-sys-color-elevation-1: #ffffff;
+    --md-sys-color-elevation-2: #ffffff;
+}
+
+[data-theme="dark"] {
+    --md-sys-color-primary: #c2e7ff;
+    --md-sys-color-on-primary: #003258;
+    --md-sys-color-primary-container: #00497d;
+    --md-sys-color-on-primary-container: #d1e4ff;
+    --md-sys-color-surface: #1a1c1e;
+    --md-sys-color-on-surface: #e2e2e6;
+    --md-sys-color-surface-variant: #42474e;
+    --md-sys-color-on-surface-variant: #c2c7cf;
+    --md-sys-color-background: #111315;
+    --md-sys-color-on-background: #e2e2e6;
+    --md-sys-color-navigation: #1a1c1e;
+    --md-sys-color-on-navigation: #e2e2e6;
+    --md-sys-color-elevation-1: #1f2123;
+    --md-sys-color-elevation-2: #242628;
+}
+
+/* Navigation Drawer */
+.navigation-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    background-color: var(--md-sys-color-navigation);
+    color: var(--md-sys-color-on-navigation);
+    transform: translateX(-280px);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .navigation-drawer {
+    border-right-color: rgba(255, 255, 255, 0.12);
+}
+
+@media (min-width: 1024px) {
+    .navigation-drawer {
+        transform: none;
+        position: fixed;
+        width: 280px;
+    }
+
+    .main-content {
+        margin-left: 280px;
+        width: calc(100% - 280px);
+    }
+
+    .navigation-drawer-overlay {
+        display: none;
+    }
+
+    .top-app-bar {
+        display: none;
+    }
+}
+
+.navigation-drawer.open {
+    transform: translateX(0);
+}
+
+.navigation-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.navigation-drawer-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 테마 적용 */
+body {
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.material-button {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border-radius: 20px;
+    padding: 10px 24px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1px;
+}
+
+.material-button:hover {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: var(--md-sys-color-on-navigation);
+    text-decoration: none;
+    border-radius: 28px;
+    margin: 4px 12px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.nav-item.active {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    z-index: 1000;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    .top-app-bar {
+        display: flex;
+        height: 64px;
+        padding: 0 16px;
+        align-items: center;
+        background-color: var(--md-sys-color-surface);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    [data-theme="dark"] .top-app-bar {
+        border-bottom-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .mobile-menu-button {
+        display: flex;
+        padding: 8px;
+        border-radius: 50%;
+        background-color: transparent;
+        box-shadow: none;
+        margin-right: 8px;
+    }
+
+    .mobile-menu-button:hover {
+        background-color: var(--md-sys-color-surface-variant);
+        box-shadow: none;
+    }
+
+    .mobile-menu-button span:last-child {
+        display: none;
+    }
+
+    .theme-toggle {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        margin: 0;
+        z-index: 1000;
+    }
+}
+
+/* 컨텐츠 영역 */
+.main-content {
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-section {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.surface-card {
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 
+        0px 1px 2px rgba(0, 0, 0, 0.3),
+        0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .surface-card {
+    box-shadow: 
+        0px 1px 2px rgba(0, 0, 0, 0.5),
+        0px 1px 3px 1px rgba(0, 0, 0, 0.25);
+}
+
+/* Text Colors */
+.text-on-surface {
+    color: var(--md-sys-color-on-surface);
+}
+
+.bg-white {
+    background-color: var(--md-sys-color-surface) !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.text-gray-700 {
+    color: var(--md-sys-color-on-surface) !important;
+} 
