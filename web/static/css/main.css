@@ -10,6 +10,9 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
 }
 
 .fonts-loaded body {
@@ -39,16 +42,16 @@ body {
     --md-sys-color-on-primary: #003258;
     --md-sys-color-primary-container: #00497d;
     --md-sys-color-on-primary-container: #d1e4ff;
-    --md-sys-color-surface: #1a1c1e;
+    --md-sys-color-surface: #292929;
     --md-sys-color-on-surface: #e2e2e6;
-    --md-sys-color-surface-variant: #42474e;
+    --md-sys-color-surface-variant: #404040;
     --md-sys-color-on-surface-variant: #c2c7cf;
-    --md-sys-color-background: #111315;
+    --md-sys-color-background: #1e1e1e;
     --md-sys-color-on-background: #e2e2e6;
-    --md-sys-color-navigation: #1a1c1e;
+    --md-sys-color-navigation: #292929;
     --md-sys-color-on-navigation: #e2e2e6;
-    --md-sys-color-elevation-1: #1f2123;
-    --md-sys-color-elevation-2: #242628;
+    --md-sys-color-elevation-1: #333333;
+    --md-sys-color-elevation-2: #383838;
 }
 
 /* Navigation Drawer */
@@ -77,11 +80,6 @@ body {
         transform: none;
         position: fixed;
         width: 280px;
-    }
-
-    .main-content {
-        margin-left: 280px;
-        width: calc(100% - 280px);
     }
 
     .navigation-drawer-overlay {
@@ -126,7 +124,7 @@ body {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
     border-radius: 20px;
-    padding: 10px 24px;
+    padding: 8px 16px;
     border: none;
     cursor: pointer;
     display: inline-flex;
@@ -136,11 +134,18 @@ body {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1px;
+    height: 40px;
+    min-width: fit-content;
+    white-space: nowrap;
 }
 
 .material-button:hover {
     background-color: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
+}
+
+.material-button .material-icons {
+    font-size: 20px;
 }
 
 .nav-item {
@@ -182,6 +187,7 @@ body {
     transition: all 0.2s ease;
     border: none;
     z-index: 1000;
+    pointer-events: auto;
 }
 
 /* Mobile Menu Button */
@@ -233,11 +239,19 @@ body {
     }
 }
 
-/* 컨텐츠 영역 */
-.main-content {
+/* 앱 레이아웃 */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
     background-color: var(--md-sys-color-background);
     color: var(--md-sys-color-on-background);
-    min-height: 100vh;
+}
+
+/* 컨텐츠 영역 */
+.main-content {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
 }
@@ -246,33 +260,23 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .content-section {
     flex: 1;
-    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
+    padding: 1rem;
 }
 
 .surface-card {
-    background-color: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 
-        0px 1px 2px rgba(0, 0, 0, 0.3),
-        0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-}
-
-[data-theme="dark"] .surface-card {
-    box-shadow: 
-        0px 1px 2px rgba(0, 0, 0, 0.5),
-        0px 1px 3px 1px rgba(0, 0, 0, 0.25);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--md-sys-color-elevation-1);
+    border-radius: 1rem;
+    padding: 1.5rem;
 }
 
 /* Text Colors */
@@ -287,4 +291,76 @@ body {
 
 .text-gray-700 {
     color: var(--md-sys-color-on-surface) !important;
+}
+
+/* JSON Input */
+.bg-surface {
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    border: 1px solid var(--md-sys-color-surface-variant);
+}
+
+[data-theme="dark"] .bg-surface {
+    border-color: var(--md-sys-color-surface-variant);
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--md-sys-color-primary);
+}
+
+/* 폰트 관련 */
+.font-pretendard {
+    font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 640px) {
+    .content-section {
+        padding: 0.5rem;
+        margin: 0 0.5rem;
+    }
+
+    .surface-card {
+        padding: 1rem;
+    }
+
+    .material-button {
+        padding: 8px 12px;
+    }
+
+    .material-button .button-text {
+        display: none;
+    }
+
+    .material-button .material-icons {
+        margin-right: 0;
+    }
+
+    textarea#jsonInput {
+        height: calc(100vh - 300px);
+        min-height: 200px;
+    }
+}
+
+/* 데스크톱 레이아웃 */
+@media (min-width: 1024px) {
+    .navigation-drawer {
+        width: 280px;
+        flex-shrink: 0;
+    }
+
+    .content-section {
+        padding: 1.5rem;
+    }
+
+    .main-content {
+        margin-left: 280px;
+        width: calc(100% - 280px);
+    }
+
+    textarea#jsonInput {
+        flex: 1;
+        height: calc(100vh - 250px);
+    }
 } 

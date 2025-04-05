@@ -18,84 +18,89 @@
     <link rel="stylesheet" href="/static/css/main.css">
     <!-- Custom JavaScript -->
     <script src="/static/js/layout.js"></script>
+    <script src="/static/js/json_format.js"></script>
+    <meta name="description" content="JSON Formatter">
 </head>
 <body>
-    <!-- Navigation Drawer -->
-    <div class="navigation-drawer">
-        <div class="p-4 flex-1">
-            <div class="flex items-center mb-8">
-                <h2 class="text-xl font-bold">Dogu</h2>
+    <div class="app-layout">
+        <!-- Navigation Drawer -->
+        <div class="navigation-drawer">
+            <div class="p-4 flex-1">
+                <div class="flex items-center mb-8">
+                    <h2 class="text-3xl font-extrabold">Dogu</h2>
+                </div>
+                <nav>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#" class="nav-item active mx-0">
+                                <span class="material-icons mr-3">code</span>
+                                <span>JSON Formatter</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-item mx-0">
+                                <span class="material-icons mr-3">settings</span>
+                                <span>설정</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <nav>
-                <ul class="space-y-1">
-                    <li>
-                        <a href="#" class="nav-item active">
-                            <span class="material-icons mr-3">home</span>
-                            <span>홈</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-item">
-                            <span class="material-icons mr-3">settings</span>
-                            <span>설정</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
-    </div>
-    <div class="navigation-drawer-overlay" onclick="toggleDrawer()"></div>
+        <div class="navigation-drawer-overlay" onclick="toggleDrawer()"></div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="container">
-            <div class="top-app-bar">
-                <button type="button" class="mobile-menu-button material-button" onclick="toggleDrawer()">
-                    <span class="material-icons">menu</span>
-                    <span>메뉴</span>
-                </button>
-            </div>
-            
-            <div class="content-section">
-                <div class="surface-card">
-                    <h1 class="text-2xl font-bold mb-4">환영합니다</h1>
-                    <p class="text-on-surface mb-6">HTMX와 Tailwind CSS가 적용된 기본 템플릿입니다.</p>
-                    <button 
-                        class="material-button"
-                        hx-get="/api/hello"
-                        hx-swap="innerHTML transition:true"
-                        hx-target="#response">
-                        <span class="material-icons">send</span>
-                        <span>HTMX 테스트</span>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="top-app-bar">
+                    <button type="button" class="mobile-menu-button material-button" onclick="toggleDrawer()">
+                        <span class="material-icons">menu</span>
+                        <span>메뉴</span>
                     </button>
-                    <div id="response" class="mt-4"></div>
+                    <div class="flex-1 font-2xl font-extrabold">Dogu</div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="surface-card">
+                        <h1 class="text-2xl font-bold mb-4">JSON Formatter</h1>
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-wrap gap-2">
+                                <button class="material-button" onclick="formatJSON()">
+                                    <span class="material-icons">format_align_left</span>
+                                    <span class="button-text">포맷</span>
+                                </button>
+                                <button class="material-button" onclick="minifyJSON()">
+                                    <span class="material-icons">compress</span>
+                                    <span class="button-text">압축</span>
+                                </button>
+                                <button class="material-button" onclick="copyJSON()">
+                                    <span class="material-icons">content_copy</span>
+                                    <span class="button-text">복사</span>
+                                </button>
+                                <button class="material-button" onclick="clearJSON()">
+                                    <span class="material-icons">clear</span>
+                                    <span class="button-text">지우기</span>
+                                </button>
+                            </div>
+                            <div class="relative flex-1">
+                                <textarea 
+                                    id="jsonInput"
+                                    class="w-full h-full p-4 text-sm rounded-lg resize-none bg-surface focus:outline-none focus:ring-2 focus:ring-primary font-pretendard"
+                                    placeholder="여기에 JSON을 입력하세요..."
+                                    spellcheck="false"
+                                ></textarea>
+                            </div>
+                            <div id="errorMessage" class="text-red-500 text-sm hidden"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <!-- Theme Toggle Button -->
+        <button type="button" class="theme-toggle" onclick="toggleTheme()">
+            <span class="material-icons" id="theme-icon">light_mode</span>
+        </button>
     </div>
-
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" onclick="toggleTheme()">
-        <span class="material-icons" id="theme-icon">light_mode</span>
-    </button>
-
-    <script>
-        // 테마 아이콘 업데이트
-        function updateThemeIcon() {
-            const themeIcon = document.getElementById('theme-icon');
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            themeIcon.textContent = currentTheme === 'dark' ? 'dark_mode' : 'light_mode';
-        }
-
-        // 초기 테마 아이콘 설정
-        updateThemeIcon();
-
-        // 테마 변경 시 아이콘 업데이트
-        const originalToggleTheme = window.toggleTheme;
-        window.toggleTheme = function() {
-            originalToggleTheme();
-            updateThemeIcon();
-        };
-    </script>
 </body>
 </html> 
