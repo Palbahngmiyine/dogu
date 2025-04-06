@@ -20,10 +20,5 @@ func main() {
 		})
 	})
 
-	// HTMX 테스트 API
-	r.GET("/api/hello", func(c *gin.Context) {
-		c.String(http.StatusOK, "안녕하세요! HTMX가 정상적으로 작동하고 있습니다.")
-	})
-
 	r.Run(":8080")
 }
