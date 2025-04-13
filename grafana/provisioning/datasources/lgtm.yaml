@@ -1,0 +1,44 @@
+apiVersion: 1
+
+datasources:
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    jsonData:
+      maxLines: 1000
+  - name: Tempo
+    type: tempo
+    access: proxy
+    url: http://tempo:3200 # Tempo는 기본적으로 3200 포트 사용
+    jsonData:
+      tracesToLogs:
+        datasourceUid: 'Loki' # Loki 데이터소스 UID를 지정해야 할 수 있으나, 여기서는 이름으로 우선 시도
+        tags: ['job', 'instance', 'pod', 'namespace']
+        mappedTags: [{ key: 'service.name', value: 'service' }]
+        mapTagNamesEnabled: false
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '1h'
+        filterByTraceID: true
+        filterBySpanID: false
+      serviceMap:
+        datasourceUid: 'prometheus' # 필요시 Mimir/Prometheus UID 지정
+      search:
+        hide: false
+      nodeGraph:
+        enabled: true
+  - name: Mimir
+    type: prometheus
+    access: proxy
+    url: http://mimir:9009/prometheus # Mimir는 /prometheus 엔드포인트 제공
+    isDefault: false
+    jsonData:
+      httpMethod: POST
+      exemplarTraceIdDestinations:
+        - datasourceUid: Tempo # Tempo 데이터소스 UID 또는 이름
+          name: trace_id
+      derivedFields:
+        - datasourceUid: Tempo # Tempo 데이터소스 UID 또는 이름
+          matcherRegex: trace_id=(\\w+)
+          name: TraceID
+          url: $${__value.raw} 

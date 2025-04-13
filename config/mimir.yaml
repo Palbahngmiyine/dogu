@@ -1,0 +1,64 @@
+target: all
+auth_enabled: false # 인증 비활성화 (테스트 목적)
+
+server:
+  http_listen_port: 9009
+  grpc_listen_port: 9095
+
+distributor:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: memberlist
+    replication_factor: 1
+
+ingester:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: memberlist
+    replication_factor: 1
+    # Ingester가 종료되기 전에 청크를 플러시하도록 설정
+    final_sleep: 0s
+  # Ingester 종료 시 핸드오버 비활성화 (단일 인스턴스)
+  lifecycler:
+    ring:
+      kvstore:
+        store: memberlist
+      replication_factor: 1
+    # 핸드오버 없이 즉시 종료
+    final_sleep: 0s
+  # WAL 비활성화 (로컬 스토리지 사용 시 일반적으로 권장되지 않으나, 단순 테스트 목적)
+  # wal:
+  #   enabled: false
+
+blocks_storage:
+  backend: filesystem
+  filesystem:
+    dir: /data/mimir/blocks
+  tsdb:
+    dir: /data/mimir/tsdb
+    # WAL 비활성화 시 권장 설정
+    head_chunks_write_buffer_size: 512MiB
+
+compactor:
+  data_dir: /data/mimir/compactor
+  sharding_ring:
+    kvstore:
+      store: memberlist
+
+store_gateway:
+  sharding_ring:
+    kvstore:
+      store: memberlist
+
+memberlist:
+  join_members: [] # 단일 인스턴스이므로 조인할 멤버 없음
+
+# Prometheus 스크랩 설정 추가
+scrape_configs:
+  - job_name: 'dogu-app'
+    static_configs:
+      - targets: ['app:8080'] # app 서비스의 metrics 엔드포인트 주소
+    metrics_path: /metrics # 메트릭 경로
+    scrape_interval: 15s # 스크랩 주기 

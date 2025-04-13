@@ -48,3 +48,6 @@ $RECYCLE.BIN/
 *.dll
 *.test
 *.out 
+
+# Cert
+root.crt
