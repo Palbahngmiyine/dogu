@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dogu_app
+    restart: unless-stopped
+
+  envoy:
+    image: envoyproxy/envoy:v1.29-latest
+    container_name: dogu_envoy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml:ro
+    depends_on:
+      - app
+    restart: unless-stopped 
